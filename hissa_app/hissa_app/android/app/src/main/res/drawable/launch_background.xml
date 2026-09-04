@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Branded launch screen: the Hissa mark on brand navy, so the very first
+     frame on Android is the logo rather than a white flash. -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/hissa_navy" />
+
+    <item>
+        <bitmap
+            android:gravity="center"
+            android:src="@drawable/hissa_launch" />
+    </item>
+</layer-list>

@@ -1,0 +1,37 @@
+{
+  "as_of": "2026-08-28",
+  "cash_egp": 12480.75,
+  "cash_usd": 63.4,
+  "holdings": [
+    {
+      "ticker": "NVDA",
+      "fraction": 0.4182,
+      "avg_cost_usd": 181.4
+    },
+    {
+      "ticker": "AAPL",
+      "fraction": 0.265,
+      "avg_cost_usd": 228.15
+    },
+    {
+      "ticker": "SPY",
+      "fraction": 0.193,
+      "avg_cost_usd": 612.3
+    },
+    {
+      "ticker": "MSFT",
+      "fraction": 0.0975,
+      "avg_cost_usd": 486.7
+    },
+    {
+      "ticker": "TSLA",
+      "fraction": 0.154,
+      "avg_cost_usd": 355.8
+    },
+    {
+      "ticker": "KO",
+      "fraction": 0.84,
+      "avg_cost_usd": 68.95
+    }
+  ]
+}

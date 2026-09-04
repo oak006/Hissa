@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Hissa navy. Matches K.navy / the web loader gradient end. -->
+    <!-- Sampled from logo.png so the mark sits on its own ground. -->
+    <color name="hissa_navy">#142D70</color>
+    <!-- K.darkBg. The app opens dark, so this avoids a white flash between
+         the launch screen and Flutter's first frame. -->
+    <color name="hissa_bg">#0A1226</color>
+</resources>
