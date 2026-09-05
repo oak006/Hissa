@@ -5,6 +5,7 @@ import '../providers/portfolio_provider.dart';
 import '../screens/buy/trade_screen.dart';
 import '../screens/buy/trade_success_screen.dart';
 import '../screens/chat/chat_screen.dart';
+import '../screens/home/holdings_screen.dart';
 import '../screens/home/home_screen.dart';
 import '../screens/invest/invest_screen.dart';
 import '../screens/invest/stock_detail_screen.dart';
@@ -97,6 +98,14 @@ class AppRouter {
               GoRoute(
                 path: '/home',
                 builder: (context, state) => const HomeScreen(),
+                routes: [
+                  // A child of Home, so the tab stays selected and Back
+                  // returns to Home rather than dropping out of the shell.
+                  GoRoute(
+                    path: 'holdings',
+                    builder: (context, state) => const HoldingsScreen(),
+                  ),
+                ],
               ),
             ],
           ),

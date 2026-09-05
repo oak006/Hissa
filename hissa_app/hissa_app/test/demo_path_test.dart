@@ -13,7 +13,9 @@ import 'package:hissa_app/providers/subscription_provider.dart';
 import 'package:hissa_app/screens/buy/processing_overlay.dart';
 import 'package:hissa_app/screens/buy/trade_screen.dart';
 import 'package:hissa_app/screens/buy/trade_success_screen.dart';
+import 'package:hissa_app/screens/home/holdings_screen.dart';
 import 'package:hissa_app/screens/home/home_screen.dart';
+import 'package:hissa_app/screens/invest/invest_screen.dart';
 import 'package:hissa_app/screens/invest/stock_detail_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -41,7 +43,17 @@ void main() {
     final router = GoRouter(
       initialLocation: initial,
       routes: [
-        GoRoute(path: '/home', builder: (_, __) => const HomeScreen()),
+        GoRoute(
+          path: '/home',
+          builder: (_, __) => const HomeScreen(),
+          routes: [
+            GoRoute(
+              path: 'holdings',
+              builder: (_, __) => const HoldingsScreen(),
+            ),
+          ],
+        ),
+        GoRoute(path: '/invest', builder: (_, __) => const InvestScreen()),
         GoRoute(
           path: '/stock/:ticker',
           builder: (_, s) =>
@@ -202,5 +214,65 @@ void main() {
     await tester.pump(const Duration(milliseconds: 300));
 
     expect(find.textContaining('≈'), findsOneWidget);
+  });
+
+  testWidgets('"View all" opens the holdings list, not the browse tab', (
+    tester,
+  ) async {
+    await pumpApp(tester, '/home');
+
+    // This harness runs the app in Arabic, so the labels are the Arabic ones.
+    await tester.tap(find.text('عرض الكل'));
+    await tester.pumpAndSettle();
+
+    // The regression this guards: it used to land on the Invest tab, which
+    // browses all 20 instruments rather than showing what the user owns.
+    expect(find.byType(HoldingsScreen), findsOneWidget);
+    expect(find.byType(InvestScreen), findsNothing);
+
+    // Every position, with its own cost basis and P&L.
+    expect(find.text('قيمة الاستثمارات'), findsOneWidget);
+    expect(find.text('عدد الأوراق'), findsOneWidget);
+    expect(find.text('متوسط التكلفة'), findsWidgets);
+    // "View all" has to mean all of them. The screen orders by value, so walk
+    // it in that order and scroll each into view — a lazy list does not build
+    // what is below the fold. Order comes from the portfolio itself rather
+    // than a hardcoded list, and the price tick is stopped, so it is stable.
+    final order = [...portfolio.holdings]
+      ..sort(
+        (a, b) => b
+            .valueUsd(market.priceOf(b.ticker))
+            .compareTo(a.valueUsd(market.priceOf(a.ticker))),
+      );
+    expect(order.length, 6);
+
+    for (final holding in order) {
+      await tester.scrollUntilVisible(
+        find.byKey(ValueKey('holding-${holding.ticker}')),
+        160,
+        scrollable: find.byType(Scrollable).first,
+      );
+      // findsWidgets, not findsOneWidget: a ticker with no bundled brand mark
+      // also renders as text inside its logo tile.
+      expect(
+        find.text(holding.ticker),
+        findsWidgets,
+        reason: '\${holding.ticker} listed',
+      );
+    }
+  });
+
+  testWidgets('a holding leads through to its stock detail', (tester) async {
+    await pumpApp(tester, '/home/holdings');
+
+    await tester.scrollUntilVisible(
+      find.byKey(const ValueKey('holding-TSLA')),
+      160,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await tester.tap(find.text('TSLA').first);
+    await tester.pumpAndSettle();
+
+    expect(find.byType(StockDetailScreen), findsOneWidget);
   });
 }

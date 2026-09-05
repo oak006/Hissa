@@ -73,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
             SectionHeader(
               s.t('holdings'),
               actionLabel: holdings.isEmpty ? null : s.t('view_all'),
-              onAction: () => context.go('/invest'),
+              onAction: () => context.push('/home/holdings'),
             ),
             const SizedBox(height: 4),
             if (holdings.isEmpty)

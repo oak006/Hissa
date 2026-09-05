@@ -142,6 +142,11 @@ class AppStrings {
     'auto_invest': ('استثمار تلقائي', 'Auto-invest'),
     'holdings': ('استثماراتك', 'Your holdings'),
     'view_all': ('عرض الكل', 'View all'),
+    'invested_value': ('قيمة الاستثمارات', 'Invested value'),
+    'positions': ('عدد الأوراق', 'Positions'),
+    'avg_cost': ('متوسط التكلفة', 'Average cost'),
+    'position_return': ('ربح الصفقة', 'Position return'),
+    'allocation': ('الوزن', 'Allocation'),
     'no_holdings': ('لسه مفيش استثمارات', 'No holdings yet'),
     'no_holdings_sub': (
       'ابدأ بأي مبلغ من 50 جنيه.',
